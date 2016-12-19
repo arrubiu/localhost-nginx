@@ -1,15 +1,30 @@
 version: "2"
 
 services:
-  nginx:
+  main-nginx:
     build:
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile      
 
     #environment:
     #  NGINX_SERVER_NAME: localhost
     #  NGINX_UPSTREAM_NAME: php
     #  DRUPAL_VERSION: 8 # Allowed: 7, 8.
-
+    container_name: localhost_nginx
+    external_links:
+#      - ildeposito8local_nginx_1
+      - spacagliari_varnish
+    networks:
+      - default
+#      - ildeposito8local_default
+      - spacagliari_default
+    volumes:
+      - ./sites-available:/etc/nginx/sites-enabled
     ports:
-     - "8181:80"
+     - "80:80"
+
+networks:
+#  ildeposito8local_default:
+#    external: true
+  spacagliari_default:
+    external: true 
